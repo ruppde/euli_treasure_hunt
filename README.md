@@ -33,6 +33,7 @@ All kinds of puzzles from the library crypto puzzles (<https://github.com/2d4d/c
 
 #### b) Substitution ciphers
 
+* Emoji Alphabet: 🔝     ⑀ ℰ ©️ ᚱ € 𝔱 ❗️     ᵺ 📧     ㏇ 🆗 ℹ️ € ⚡     ꬃ Ȑ モ     ℏ 🆔 🌛 € ♑     ï ℕ     ᵺ ℰ     Ɽ € 🌛     ﻁ 𝔬 ₩ £ ❗️
 * Upside down every 2nd word: ```Top ¡ʇǝɹɔǝs The sǝᴉʞooɔ are uǝppᴉɥ in ǝɥʇ red ¡ꞁʍoq```
 * Leet speak: ```T0p $3cr3t! Th3 c00k13$ @r3 h1dd3n 1n th3 r3d b0wl!```
 * Camelcase: ```tOp sEcReT! tHe cOoKiEs aRe hIdDeN In tHe rEd bOwL!```

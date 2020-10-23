@@ -44,7 +44,7 @@ import crypto_puzzles
 ################################################################################################
 
 # todo: dirty hack to import example-config passed after -e before arg-parsing in main(), fix with django + db someday
-if sys.argv[1] == '-e':
+if len(sys.argv) > 1 and sys.argv[1] == '-e':
     exec("from %s import *" % sys.argv[2])
     print("DOING config file: " + sys.argv[2])
 else:
@@ -128,34 +128,6 @@ substitute_partly_solved_frequency_analysis:0
     # choose "round" looking digits for combination_lock_combination like 066, looks more natural ;)
     combination_lock_puzzle='stego_saurus'
 
-    # distribute digits of combination lock to each player per location
-    combination_lock_digit_for_player={}
-    for players_in_location in same_location:
-        digits = list(combination_lock_combination[::-1])
-
-        # give player more than one digit of it's a long combination
-        num_to_pop = int(len(digits) / len(players_in_location))
-
-
-        num_player = 0
-        for player in players_in_location:
-            num_player += 1
-            num_digit = 0
-            digit_for_player =''
-            position = ''
-            for lola in range(num_to_pop):
-                digit_for_player += digits.pop()
-                position += str((num_player-1) * num_to_pop + 1 + num_digit) + ','
-                num_digit += 1
-
-            position = position.rstrip(',')
-
-            if language == 'en':
-                combination_lock_digit_for_player[player] = 'The combination of position(s) ' + position + ' is ' + digit_for_player + ' (If you are only missing one digit, just try it out ;)'
-            elif language == 'de':
-                combination_lock_digit_for_player[player] = 'Die Kombination der Position(en) ' + position + ' ist ' + digit_for_player + ' (Wenn nur eine Stelle fehlt, einfach durchprobieren ;)'
-
-        # if only one digit is left over, it can easily be brute forced and that's the best way to prevent players from brute forcing a digit they're supposed to find because then they would have to try 100 digits ;) so we don't give it the last player and leave it like this
 
 
     text_known_plaintext={}
@@ -386,6 +358,40 @@ parents_introduction_hide_own_puzzles['de'] = '''Eigene Rätsel einfügen ist ei
 '''
 
 ################## end of stuff for webpage
+
+# distribute digits of combination lock to each player per location
+combination_lock_digit_for_player={}
+for players_in_location in same_location:
+    digits = list(combination_lock_combination[::-1])
+
+    # give player more than one digit of it's a long combination
+    num_to_pop = int(len(digits) / len(players_in_location))
+
+
+    num_player = 0
+    for player in players_in_location:
+        num_player += 1
+        num_digit = 0
+        digit_for_player =''
+        position = ''
+        for lola in range(num_to_pop):
+            digit_for_player += digits.pop()
+            position += str((num_player-1) * num_to_pop + 1 + num_digit) + ','
+            num_digit += 1
+
+        position = position.rstrip(',')
+
+        position_word = crypto_puzzles.convert_num_to_number_words(position, language)
+
+        # convert e.g. 5 => five, so players can't just look for the few numbers in all the text
+        digit_for_player_word = crypto_puzzles.convert_num_to_number_words(digit_for_player, language)
+
+        if language == 'en':
+            combination_lock_digit_for_player[player] = 'The combination of position(s) ' + position_word + ' is ' + digit_for_player_word + ' (If you are only missing one digit, just try it out ;)'
+        elif language == 'de':
+            combination_lock_digit_for_player[player] = 'Die Gepäcknummer für Koffer dreiundzwanzig an Position ' + position_word + ' ist ' + digit_for_player_word
+
+        # if only one digit is left over, it can easily be brute forced and that's the best way to prevent players from brute forcing a digit they're supposed to find because then they would have to try 100 digits ;) so we don't give it the last player and leave it like this
 
 # put text above into lists:
 for line in universal_hiding_places_text[language].splitlines():
@@ -790,7 +796,7 @@ def main():
 
         # create puzzles into seperate .docx for each player
         for player in players_grade:
-            log('Doing player' + player)
+            log('Doing player ' + player)
             grade = players_grade[player] + int(grade_adjustment)
             hint=""
 
@@ -1034,10 +1040,11 @@ def main():
 
                 #font.size = Pt(7)
 
-                if language == 'en':
-                    hint = 'Hint: ' + hint
-                elif language == 'de':
-                    hint = 'Tipp: ' + hint
+                if hint:
+                    if language == 'en':
+                        hint = 'Hint: ' + hint
+                    elif language == 'de':
+                        hint = 'Tipp: ' + hint
 
                 docx[player].add_paragraph(hint)
 
