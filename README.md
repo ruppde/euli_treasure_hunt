@@ -103,3 +103,7 @@ General tips for running the game via video chat:
 There's no minimum age to play but kids should be able to read fluently. Younger kids might form a group with older ones.
 
 Ideas and contributions are always welcome! (Especially a web gui for configuration is missing ...)
+
+## Todo
+- [ ] Web interface
+- [ ] Check the emoji alphabets from crypto puzzles (min version of libre/ms office?)
