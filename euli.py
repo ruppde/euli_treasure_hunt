@@ -972,7 +972,7 @@ def main():
                 # check if player has python skills
                 if player in players_skills and 'py' in players_skills[ player ]:
                     # player knows python, go on
-                    crackme_code = crypto_puzzles.generate_crackme_python(message, language, grade, 0 )
+                    crackme_code, hint = crypto_puzzles.generate_crackme_python(message, language, grade, 0 )
 
                     crackme_short_name = 'crackme_for_player_' + player + '.py'
                     crackme_filename = outdir + '/' + crackme_short_name
